@@ -45,8 +45,10 @@ app.get('/', (req, res) => {
 
 app.post('/banks', bankController.setBank);
 
-const server = app.listen(8001, () => {
-  console.log('server is running at 8001');
+const PORT = process.env.PORT || 8001
+
+const server = app.listen(PORT, () => {
+  console.log(`server is running at ${PORT}`);
 });
 
 const io = socket(server);
