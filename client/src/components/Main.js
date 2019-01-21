@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, lazy, Suspense } from 'react';
 import io from 'socket.io-client';
 import Loader from './Loader';
 import {connect} from 'react-redux';
 import bankAction from '../store/actions/bankAction';
-import BankDetail from './BankDetail';
 import PropTypes from 'prop-types';
 
+const BankDetail = lazy(() => import(/* webpackChunkName: 'BankDetail' */'./BankDetail'));
 
 const socket = io('http://localhost:8001');
 
@@ -144,7 +144,7 @@ class Main extends Component {
             ) : '' 
           }
           {
-            isLoading ? <Loader /> : errMsg ? <p className="errMsg">{errMsg}</p> : <BankDetail/>
+            isLoading ? <Loader /> : errMsg ? <p className="errMsg">{errMsg}</p> : <Suspense fallback={<Loader />}><BankDetail/></Suspense>
           }
         </div>
         <div className="overlay"></div>

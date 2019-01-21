@@ -1,18 +1,20 @@
-import React, { Component } from 'react';
+import React, { lazy, Suspense } from 'react';
 import Header from './components/Header';
-import Main from './components/Main';
 
 import './scss/app.scss';
+import Loader from './components/Loader';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <Header />
+const Main = lazy(() => import(/* webpackChunkName: 'Main' */'./components/Main'));
+
+function App(){
+  return (
+    <div className="App">
+      <Header />
+      <Suspense fallback={<Loader />}>
         <Main />
-      </div>
-    );
-  }
+      </Suspense>
+    </div>
+  );
 }
 
 export default App;
