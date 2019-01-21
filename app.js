@@ -25,7 +25,6 @@ app.set('views', path.join(__dirname, './server/views'));
 // Set image path
 app.use('/images', express.static(path.join(__dirname, './client/src/images')));
 
-
 // Essential middleware
 app.use(bodyParser.json());
 app.use(cors());
