@@ -14,6 +14,10 @@ const app = express();
 
 mongoose.connect(`mongodb://${process.env.NAME}:${process.env.PASSWORD}@ds161144.mlab.com:61144/ifsc`, { useNewUrlParser: true });
 
+// mongoose.connect('mongodb://localhost/IFSC', (err) => {
+//   console.log('connected to mongodb');
+// });
+
 mongoose.connection.once('open', () => {
   console.log('connected to database');
 });
@@ -44,6 +48,8 @@ app.get('/', (req, res) => {
 });
 
 app.post('/banks', bankController.setBank);
+
+// require('./server/boostarp')();
 
 const PORT = process.env.PORT || 8001
 
