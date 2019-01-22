@@ -57,7 +57,10 @@ class Main extends Component {
         isLoading: true, 
         IFSC: ''
       });
-      this.setBankData(IFSC)
+      this.setBankData(IFSC, () => {
+        console.log('in hanlde submit')
+        bankAction.setBankDetailsIntoDB()
+      })
     } 
   }
 
@@ -65,13 +68,16 @@ class Main extends Component {
     this.setState({
       isLoading : true
     })
-    this.setBankData(e.target.id||e.target.innerHTML)
+    this.setBankData(e.target.id||e.target.innerHTML, () => {
+      console.log('in hanlde search')
+      return;
+    })
     this.setState({
       bankQueryResult: []
     })
   }
   
-  setBankData = (ifsc) => {
+  setBankData = (ifsc, checkDBFunc) => {
     this.props.dispatch(bankAction.getBankDetails(ifsc, (isFounded) => {
       if(isFounded) {
         this.setState({
@@ -79,9 +85,10 @@ class Main extends Component {
           IFSC: '',
           errMsg: ''
         });
-        if(ifsc.length === 11 && /\d/.test(ifsc)) {
-          bankAction.setBankDetailsIntoDB()
-        }
+        checkDBFunc()
+        // if(ifsc.length === 11 && /\d/.test(ifsc)) {
+        //   bankAction.setBankDetailsIntoDB()
+        // }
       } else {
         this.setState({
           isLoading: false,
