@@ -17,14 +17,16 @@ class Main extends Component {
       isLoading: false,
       bankQueryResult : [],
       online: true,
-      errMsg: ''
+      errMsg: '',
+      dropListHeight : 0
     }
   }
 
   handleChange = e => {
     if(this.state.IFSC === '') {
       this.setState({
-        bankQueryResult: []
+        bankQueryResult: [],
+        dropListHeight: '0'
       })
     }
     
@@ -32,6 +34,16 @@ class Main extends Component {
       IFSC: e.target.value
     }, () => {
       socket.emit('bankQuery', this.state.IFSC)
+      const {bankQueryResult} = this.state;
+      if(bankQueryResult.length >= 5) {
+        this.setState({
+          dropListHeight: '180px'
+        })
+      } else {
+        this.setState({
+          dropListHeight: `${bankQueryResult.length * 35}px`
+        })
+      }
     });
 
   }
@@ -115,7 +127,9 @@ class Main extends Component {
             </form>
             {
               bankQueryResult.length > 0 && (
-                <div className="bank-query">
+                <div className="bank-query" style={{
+                  height: this.state.dropListHeight
+                }}>
                   {
                     bankQueryResult && bankQueryResult.map(bank => (
                       <button
