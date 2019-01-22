@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 const BankDetail = lazy(() => import(/* webpackChunkName: 'BankDetail' */'./BankDetail'));
 
-const socket = io('http://localhost:8001');
+const socket = io('https://razorpay-ifsc.herokuapp.com/');
 
 class Main extends Component {
   constructor(props) {
@@ -79,7 +79,9 @@ class Main extends Component {
           IFSC: '',
           errMsg: ''
         });
-        bankAction.setBankDetailsIntoDB()
+        if(ifsc.length === 11 && /\d/.test(ifsc)) {
+          bankAction.setBankDetailsIntoDB()
+        }
       } else {
         this.setState({
           isLoading: false,
