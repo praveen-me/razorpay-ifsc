@@ -61,11 +61,15 @@ const io = socket(server);
 
 io.on('connection', (socket) => {
   socket.on('bankQuery', (bankQuery) => {
-    Bank.find({ BANK: new RegExp(bankQuery, 'i') })
-      .limit(75)
-      .exec((err, data) => {
-        console.log(data);
-        socket.emit('queryResult', data);
-      });
+    if (!bankQuery) {
+      socket.emit('queryResult', []);
+    } else {
+      Bank.find({ BANK: new RegExp(bankQuery, 'i') })
+        .limit(75)
+        .exec((err, data) => {
+          console.log(data);
+          socket.emit('queryResult', data);
+        });
+    }
   });
 });
