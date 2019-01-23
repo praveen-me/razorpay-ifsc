@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 const BankDetail = lazy(() => import(/* webpackChunkName: 'BankDetail' */'./BankDetail'));
 
-const socket = io('http://localhost:8001/');
+const socket = io('https://razorpay-ifsc.herokuapp.com');
 
 class Main extends Component {
   constructor(props) {
