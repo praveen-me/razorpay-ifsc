@@ -67,7 +67,6 @@ io.on('connection', (socket) => {
       Bank.find({ BANK: new RegExp(bankQuery, 'i') })
         .limit(75)
         .exec((err, data) => {
-          console.log(data);
           socket.emit('queryResult', data);
         });
     }

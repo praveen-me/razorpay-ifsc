@@ -27,12 +27,20 @@ button {
 
 // Header 
 header {
+  position: fixed;
+  top: 0;
   font-size: 2rem;
   padding: 1rem 0;
   background: #1FCA7E;
   color: #fff;
   font-weight: bold;
   width: 100%;
+  z-index: 5;
+}
+main {
+  padding: 1rem;
+  padding-bottom: 4rem;
+  margin-top: 2rem;
 }
 
 .rzp-logo {
@@ -177,21 +185,17 @@ header {
   position: relative;
 }
 
-main {
-  padding: 1rem;
-  padding-bottom: 4rem;
-}
 
+// drop section
 .bank-query {
   overflow-y: scroll;
   height: 100px;
   background: #e7e7e2;
   position: absolute;
   width: 77%;
-  box-shadow : 2px 3px 12px 0px rgba(0, 0, 0, 0.56)
+  box-shadow : 0px 5px 9px 0px rgba(0, 0, 0, 0.56);
 }
 
-// Drop list
 .drop-list {
   display: block;
   padding: 0.5rem 0;
@@ -218,6 +222,7 @@ footer {
   padding: 1rem;
   text-align: center;
   font-weight: 300;
+  width: 100%;
 }
 
 
