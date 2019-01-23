@@ -14,13 +14,13 @@ const app = express();
 
 mongoose.connect(`mongodb://${process.env.NAME}:${process.env.PASSWORD}@ds161144.mlab.com:61144/ifsc`, { useNewUrlParser: true });
 
-// mongoose.connect('mongodb://localhost/IFSC', (err) => {
+// mongoose.connect('mongodb://localhost/razorpay-ifsc', (err) => {
 //   console.log('connected to mongodb');
 // });
 
-mongoose.connection.once('open', () => {
-  console.log('connected to database');
-});
+// mongoose.connection.once('open', () => {
+//   console.log('connected to database');
+// });
 
 // Setting view for apps
 app.set('view engine', 'pug');
@@ -60,18 +60,12 @@ const server = app.listen(PORT, () => {
 const io = socket(server);
 
 io.on('connection', (socket) => {
-  let allBanks = [];
-  Bank.find({}, (err, banks) => {
-    allBanks = banks;
-  });
   socket.on('bankQuery', (bankQuery) => {
-    const query = new RegExp(bankQuery, 'i');
-    let filteredBanks;
-    if (bankQuery === '') {
-      filteredBanks = [];
-    } else {
-      filteredBanks = allBanks.filter(bank => query.test(bank.BANK));
-    }
-    socket.emit('queryResult', filteredBanks);
+    Bank.find({ BANK: new RegExp(bankQuery, 'i') })
+      .limit(75)
+      .exec((err, data) => {
+        console.log(data);
+        socket.emit('queryResult', data);
+      });
   });
 });

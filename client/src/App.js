@@ -3,6 +3,7 @@ import Header from './components/Header';
 
 import './scss/app.scss';
 import Loader from './components/Loader';
+import Footer from './components/Footer';
 
 const Main = lazy(() => import(/* webpackChunkName: 'Main' */'./components/Main'));
 
@@ -13,6 +14,7 @@ function App(){
       <Suspense fallback={<Loader />}>
         <Main />
       </Suspense>
+      <Footer />
     </div>
   );
 }
