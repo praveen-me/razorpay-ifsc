@@ -20,6 +20,7 @@ class Main extends Component {
       errMsg: '',
       dropListHeight : 0
     }
+    this.selectedIndex = null;
   }
 
   handleChange = e => {
@@ -46,7 +47,7 @@ class Main extends Component {
       }
     });
   }
-
+  
   handleSubmit = e => {
     e.preventDefault();
     const {IFSC} = this.state;
@@ -72,6 +73,7 @@ class Main extends Component {
     this.setState({
       bankQueryResult: []
     })
+    this.selectedIndex = null;
   }
   
   setBankData = (ifsc, checkDBFunc) => {
@@ -115,6 +117,32 @@ class Main extends Component {
     }, 1000)
   })()
 
+  removeSelected = (nodes, id) => {
+    nodes.forEach(node => {
+      if(node.classList.contains(id)) {
+        return;
+      } else {
+        node.blur();
+      }
+    })
+  }
+
+  handleKeyDown = e => {
+    const list = document.querySelectorAll('.drop-list');
+    if(e.keyCode === 40) {
+
+      this.selectedIndex = this.selectedIndex === list.length - 1 || this.selectedIndex === null ? 0 : this.selectedIndex + 1;
+
+      this.removeSelected(list, this.selectedIndex);
+      list[this.selectedIndex].focus();
+    } else if(e.keyCode === 38) {    
+      this.selectedIndex = this.selectedIndex === 0 || this.selectedIndex === null ? list.length - 1 : this.selectedIndex - 1;
+      // this.selectedIndex = this.selectedIndex === null ? list.length - 1 : this.selectedIndex - 1;
+      this.removeSelected(list, this.selectedIndex);
+      list[this.selectedIndex].focus();
+    }
+  }
+
   render() {
     const { isLoading, IFSC, bankQueryResult, online, errMsg} = this.state;
     const {prevSearches} = this.props;
@@ -123,9 +151,18 @@ class Main extends Component {
       online ? (
         <main>
         <div className="wrapper">
-          <div className="form-wrapper">
-            <form onSubmit={this.handleSubmit} className={`form ${IFSC.length === 11 ? 'success' : '' || IFSC.length > 11 ? 'danger' : ''}`}>
-              <input type="text" onChange={this.handleChange} className="input-field" placeholder="Enter Bank's IFSC Code OR Bank Name" value={IFSC}/>
+          <div 
+          className="form-wrapper"
+          onKeyDown={this.handleKeyDown} >
+            <form 
+            onSubmit={this.handleSubmit} 
+            className={`form ${IFSC.length === 11 ? 'success' : '' || IFSC.length > 11 ? 'danger' : ''}`}>
+              <input type="text" 
+              onChange={this.handleChange} 
+              className="input-field" 
+              placeholder="Enter Bank's IFSC Code OR Bank Name" 
+              value={IFSC}
+              />
               <button type="submit" className="btn">Get Details</button>
             </form>
             {
@@ -134,12 +171,12 @@ class Main extends Component {
                   height: this.state.dropListHeight
                 }}>
                   {
-                    bankQueryResult && bankQueryResult.map(bank => (
+                    bankQueryResult && bankQueryResult.map((bank, i) => (
                       <button
                       key={bank._id} 
                       id={bank.IFSC} 
                       onClick={this.handleSearch} 
-                      className="drop-list btn">{bank.BANK}, {bank.CITY}</button>
+                      className={`drop-list btn ${i}`}>{bank.BANK}, {bank.CITY}</button>
                     ))
                   }
                 </div>

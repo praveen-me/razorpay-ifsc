@@ -204,6 +204,10 @@ main {
   background: transparent;
   border: none;
   border-bottom: 1px solid #ccc;
+  &:focus {
+    outline: none;
+    background: #b7b7b7;
+  }
 }
 
 .errMsg {

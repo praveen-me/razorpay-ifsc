@@ -64,12 +64,12 @@ io.on('connection', (socket) => {
     if (bankQuery === '') {
       socket.emit('queryResult', []);
     } else {
-      Bank.find({ $or: [
+      Bank.find({$or: [
         { BANK: new RegExp(bankQuery, 'i') },
         { CITY: new RegExp(bankQuery, 'i') },
         { ADDRESS: new RegExp(bankQuery, 'i') },
-      ] })
-        .limit(10)
+      ]})
+        .limit(5)
         .exec((err, data) => {
           socket.emit('queryResult', data);
         });
