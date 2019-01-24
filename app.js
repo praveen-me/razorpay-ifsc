@@ -18,9 +18,9 @@ mongoose.connect(`mongodb://${process.env.NAME}:${process.env.PASSWORD}@ds161144
 //   console.log('connected to mongodb');
 // });
 
-// mongoose.connection.once('open', () => {
-//   console.log('connected to database');
-// });
+mongoose.connection.once('open', () => {
+  console.log('connected to database');
+});
 
 // Setting view for apps
 app.set('view engine', 'pug');
@@ -61,11 +61,15 @@ const io = socket(server);
 
 io.on('connection', (socket) => {
   socket.on('bankQuery', (bankQuery) => {
-    if (!bankQuery) {
+    if (bankQuery === '') {
       socket.emit('queryResult', []);
     } else {
-      Bank.find({ BANK: new RegExp(bankQuery, 'i') })
-        .limit(75)
+      Bank.find({ $or: [
+        { BANK: new RegExp(bankQuery, 'i') },
+        { CITY: new RegExp(bankQuery, 'i') },
+        { ADDRESS: new RegExp(bankQuery, 'i') },
+      ] })
+        .limit(10)
         .exec((err, data) => {
           socket.emit('queryResult', data);
         });
