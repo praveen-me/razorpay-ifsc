@@ -45,7 +45,6 @@ class Main extends Component {
         })
       }
     });
-
   }
 
   handleSubmit = e => {
@@ -58,7 +57,6 @@ class Main extends Component {
         IFSC: ''
       });
       this.setBankData(IFSC, () => {
-        console.log('in hanlde submit')
         bankAction.setBankDetailsIntoDB()
       })
     } 
@@ -69,7 +67,6 @@ class Main extends Component {
       isLoading : true
     })
     this.setBankData(e.target.id||e.target.innerHTML, () => {
-      console.log('in hanlde search')
       return;
     })
     this.setState({
@@ -86,9 +83,6 @@ class Main extends Component {
           errMsg: ''
         });
         checkDBFunc()
-        // if(ifsc.length === 11 && /\d/.test(ifsc)) {
-        //   bankAction.setBankDetailsIntoDB()
-        // }
       } else {
         this.setState({
           isLoading: false,
